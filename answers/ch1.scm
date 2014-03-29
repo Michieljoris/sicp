@@ -297,59 +297,63 @@
 ;; ;a valid change. What is the lowerbound? How many get cut off?
 
 ;; ;Ex1.15
-;; (define (cube x) (* x x x))
-;; (define c 0)
-;; (define (p x) (set! c (+ c 1)) (- (* 3 x) (* 4 (cube x))))
+(define (cube x) (* x x x))
+(define c 0)
+(define (p x) (set! c (+ c 1)) (- (* 3 x) (* 4 (cube x))))
 
-;; (define (sine angle)
-;;   (if (not (> (abs angle) 0.1))
-;;       angle
-;;       (p (sine (/ angle 3.0)))))
-
-;; ;The number of steps grows logarithmically. The number of times p gets called
+(define (sine angle)
+  (if (not (> (abs angle) 0.1))
+      angle
+      (p (sine (/ angle 3.0)))))
+(sine 12.15)
+(= c 5)
+;; a) 5   12.15/3^5 = 0.05
+;; b) The number of steps grows logarithmically. The number of times p gets called
 ;; ;is exactly (int(log3(10*a))+1. So if a grows by 1 time grows by log3.
 ;; ;The stack grows by the same proportion. Every time angle gets divided by 3
 ;; ;another return to p has to be remembered.
 
 ;; ;Ex1.16
-;; (define (fast-expt b n)
-;;   (cond ((= n 0) 1)
-;;         ((even? n) (square (fast-expt b (/ n 2))))
-;;         (else (* b (fast-expt b (- n 1))))))
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
 
-;; (define (even? n)
-;;   (= (remainder n 2) 0))
+(define (even? n)
+  (= (remainder n 2) 0))
 
-;; (define (expt-it b n)
-;;   (expt-iterate 1 b n))
+(define (expt-it b n)
+  (expt-iterate 1 b n))
 
-;; (define (expt-iterate a b n)
-;;   (cond ((= n 0) a)
-;;         ((even? n) (expt-iterate a (square b) (/ n 2)))
-;;         (else (expt-iterate (* a b) b (- n 1)))))
+(define (expt-iterate a b n)
+  (cond ((= n 0) a)
+        ((even? n) (expt-iterate a (square b) (/ n 2)))
+        (else (expt-iterate (* a b) b (- n 1)))))
 ;; ;Ex1.17
-;; (define (m* a b)
-;;   (if (= b 0)
-;;       0
-;;       (+ a (m* a (- b 1)))))
+(define (m* a b)
+  (if (= b 0)
+      0
+      (+ a (m* a (- b 1)))))
 
-;; (define (halve n) (/ n 2))
-;; (define (double n) (* n 2))
+(define (halve n) (/ n 2))
+(define (double n) (* n 2))
 
-;; (define (fast-* a b)
-;;   (cond ((= a 0) 0)
-;; 	((= b 0) 0)
-;;         ((even? a) (double (fast-* (halve a) b)))
-;; 	(else (+ a (fast-* a (- b 1))))))
+(define (fast-* a b)
+  (cond ((= a 0) 0)
+	((= b 0) 0)
+        ((even? a) (double (fast-* (halve a) b)))
+	(else (+ b (fast-* b (- a 1))))))
+
+
 ;; ;Ex1.18
-;; (define (*-it a b)
-;;   (*-iterative 0 a b))
+(define (*-it a b)
+  (*-iterative 0 a b))
 
-;; (define (*-iterative r a b)
-;;   (cond ((= a 0) r)
-;; 	((= b 0) r)
-;; 	((even? a) (*-iterative r (halve a) (double b)))
-;; 	(else (*-iterative (+ r a) a (- b 1)))))
+(define (*-iterative r a b)
+  (cond ((= a 0) r)
+	((= b 0) r)
+	((even? a) (*-iterative r (halve a) (double b)))
+	(else (*-iterative (+ r a) a (- b 1)))))
 ;; ;Ex1.19
 ;; (define (fib n)
 ;;   (fib-iter 1 0 0 1 n))
