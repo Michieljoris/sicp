@@ -84,22 +84,25 @@
 (if  (good-enough? .001 .001)
      "wrong answer!!") 
 
-(define big-number (expt 10 100))
+(define big-number (expt 10 1000))
 (good-enough? (+ 0 big-number) (square big-number))
 ;returns true as it should. 
 
 ;but this should return false, but returns true as well:
-(if  (good-enough? (+ big-number 1) (square big-number ))
-     "wrong answer"
+(if  (good-enough? (+ big-number 1 (square big-number ))
+     "wrong answer" "ok"
      )
+; In guile this works ok by the way
+     
 ; In this case the comparision operator < can't deal with big numbers:
 (< (expt 10 10 ) 0.003) ; #f
 (< (expt 10 100 ) 0.003) ; #t
+; In guile this works ok by the way
 
 ; Some overflow problem, but I can imagine that even if numbers get
 ; converted into scientific notation numbers end up being equal
 ; despite being actually being different to a large extent but
-; precision was lost
+; precision was lost, depends on scheme used. Guile was ok
 (define (good-enough2? last-guess guess)
   (< (abs (- last-guess guess )) 0.001))
 
@@ -249,37 +252,40 @@
                (* 3  n0)))
   (cond ((> counter 0) (f-iterate n1 n2 n (- counter 1)))
          (else n)))
-(f 5);25
-(fi 5);25
+(f 10);1892
+(fi 10);1892
+(f 3)
+(fi 3)
 
-
-;; ;Ex1.12
-;; (define (pt r n)
-;;   (cond
-;;    ((= n 0) 1)
-;;    ((= n r) 1)
-;;    (else (+ (pt (- r 1) (- n 1)) (pt (- r 1) n)))))
+;Ex1.12
+(define (pt r n)
+  (cond
+   ((= n 0) 1)
+   ((= n r) 1)
+   (else (+ (pt (- r 1) (- n 1)) (pt (- r 1) n)))))
+(pt 4 2) ;6
 
 ;; ;Ex1.13
 ;; ;See notebook. In short:
 ;; ;Assume the hint proof. Is fib(n-2) + fib(n-1) = fib (n)?
 ;; ;After filling in the vars> left of = can indeed be reduced to right of =
+;; Just rewrite the n and n-1 factors as n-2 factors and simplify.
 ;; ;It's true for n=3 and indeed for general n
 ;; ;For fib(n) to be closest integer to a=phi^n/sqrt5 then -.5<fib(n)-a<.5
-;; ;then .5<-epsilon^n/sqrt5<.5. This is true for 1/sqrt5 Since epsilon<1 then
-;; ;epsilon<1 for every n>0 so it's true.
-;; (define (fib n)
-;;   (fib-iter 1 0 n))
+;; ;then -.5<-epsilon^n/sqrt5<.5. This is true: -0.5<1/sqrt5<0.5 Since epsilon<1 then
+;; ;epsilon^n<1 for every n>0 so it will always be between 0.5 and -0.5
+(define (fib n)
+  (fib-iter 1 0 n))
 
-;; (define (fib-iter a b count)
-;;   (if (= count 0)
-;;       b
-;;       (fib-iter (+ a b) a (- count 1))))
+(define (fib-iter a b count)
+  (if (= count 0)
+      b
+      (fib-iter (+ a b) a (- count 1))))
 
-;; (define (fib2 n)
-;;   (expt (/ (/ (+ 1 (sqrt 5)) 2) (sqrt 5)) n))
-;;   ;; (expt (/ (+ (sqrt 5) 5) 10) n)) (/ (expt (/ (+ 1 (sqrt 5)) 2) n)
-;;   ;; (sqrt 5))
+(define (fib2 n)
+  (expt (/ (/ (+ 1 (sqrt 5)) 2) (sqrt 5)) n))
+  ;; (expt (/ (+ (sqrt 5) 5) 10) n)) (/ (expt (/ (+ 1 (sqrt 5)) 2) n)
+  ;; (sqrt 5))
 ;; ;Ex1.14
 ;; ;Space used is linear. One more cent means one more depth at most when the
 ;; ;procedure is counting cents and not deducting larger coins.
