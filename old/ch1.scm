@@ -60,7 +60,8 @@
        (/ (+ x y) 2))
 
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (< (abs
+ (- (square guess) x)) 0.001))
 
 (define (square x) (* x x))
 
@@ -84,12 +85,12 @@
 (if  (good-enough? .001 .001)
      "wrong answer!!") 
 
-(define big-number (expt 10 1000))
+(define big-number (expt 10.0 1000))
 (good-enough? (+ 0 big-number) (square big-number))
 ;returns true as it should. 
 
 ;but this should return false, but returns true as well:
-(if  (good-enough? (+ big-number 1 (square big-number ))
+(if  (good-enough? (+ big-number 1) (square big-number ))
      "wrong answer" "ok"
      )
 ; In guile this works ok by the way
@@ -187,7 +188,7 @@
     (A 0 2) ; 4  2^2
 (A 1 3) 
 ;;     (A 0 (A 1 2));8  2^3 etc so:
-(define (gm n) (expt 2 n)) == (A 1 n)
+(define (gm n) (expt 2 n)); == (A 1 n)
 ;the exponent of 2 is increasing linearly.
 
 (define (h n) (A 2 n))
@@ -355,22 +356,23 @@
 	((even? a) (*-iterative r (halve a) (double b)))
 	(else (*-iterative (+ r a) a (- b 1)))))
 ;; ;Ex1.19
-;; (define (fib n)
-;;   (fib-iter 1 0 0 1 n))
+define (fib n)
+  (fib-iter 1 0 0 1 n))
 
-;; (define (fib-iter a b p q count)
-;;   (cond ((= count 0) b)
-;; 	((even? count)
-;; 	 (fib-iter a
-;; 		   b
-;; 		   (+ (square p) (square q))
-;; 		   (+ (* 2 p q) (square q))
-;; 		   (/ count 2)))
-;; 	(else (fib-iter (+ (* b q) (* a q) (* a p))
-;; 			(+ (* b p) (* a q))
-;; 			p
-;; 			q
-;; 			(- count 1)))))
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+	((even? count)
+	 (fib-iter a
+		   b
+		   (+ (square p) (square q))
+		   (+ (* 2 p q) (square q))
+		   (/ count 2)))
+	(else (fib-iter (+ (* b q) (* a q) (* a p))
+			(+ (* b p) (* a q))
+			p
+			q
+			(- count 1)))))
+
 ;; ;Ex1.20
 ;; (define (rem a b) (remainder a b))
 ;; (gcd 206 40)
