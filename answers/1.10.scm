@@ -49,3 +49,4 @@
 (A 3 2) ; 2^2
 (A 3 3) ; 2^2^2^2
 ;the number of exponents is doubling 2^^(2^(n-1))
+

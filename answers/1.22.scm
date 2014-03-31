@@ -18,7 +18,11 @@
 (define (prime? n)
   (= n (smallest-divisor n)))
 
+;;guile
 (define (runtime) (/ (tms:clock (times)) 1000000))
+;;racket
+(define (runtime) (current-milliseconds))
+
 
 (define (timed-prime-test n)
   ;; (newline)
@@ -53,12 +57,32 @@
   )
   
 (sqrt 10) ;~3.16
+;;laptop results after sexp
 (search-for-primes 10000000001 3) ;70ms
 (search-for-primes 100000000001 3) ;250ms
 (search-for-primes 1000000000001 3) ;740ms
 (search-for-primes 10000000000001 3) ;2290ms
 (search-for-primes 100000000000001 3) ; 7320ms
-
 ;;Roughly 3 times as slow when prime is 10 times as big
-
+;; Output on desktop
+;; 10000000019 *** 6ms
+;; 10000000033 *** 7ms
+;; 10000000061 *** 6ms
+;; done
+;; 100000000003 *** 21ms
+;; 100000000019 *** 21ms
+;; 100000000057 *** 21ms
+;; done
+;; 1000000000039 *** 66ms
+;; 1000000000061 *** 66ms
+;; 1000000000063 *** 65ms
+;; done
+;; 10000000000037 *** 212ms
+;; 10000000000051 *** 212ms
+;; 10000000000099 *** 212ms
+;; done
+;; 100000000000031 *** 682ms
+;; 100000000000067 *** 682ms
+;; 100000000000097 *** 682ms
+;; done
 

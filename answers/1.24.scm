@@ -9,6 +9,7 @@
 	(else
 	 (remainder (* base (expmod base (- exp 1) m))
 		    m))))
+
 (define (fermat-test n)
   (define (try-it a)
     (= (expmod a n n) a))
@@ -22,11 +23,14 @@
 
 (define (runtime) (/ (tms:clock (times)) 1000000))
 
+;;racket
+(define (runtime) (current-milliseconds))
+
 (define (timed-prime-test n)
   (start-prime-test n (runtime)))
 
 (define (start-prime-test n start-time)
-  (if (fast-prime? n 100)
+  (if (fast-prime? n 100000)
       (report-prime n (- (runtime) start-time))
       #f
       ))
@@ -53,9 +57,38 @@
   )
   
 (sqrt 10) ;~3.16
-(search-for-primes 10000000001 3) ;50ms from 70ms
-(search-for-primes 100000000001 3) ;170ms from 250ms
-(search-for-primes 1000000000001 3) ;510ms from 740ms
-(search-for-primes 10000000000001 3) ;1590ms from 2290ms
-(search-for-primes 100000000000001 3) ; 4970ms from 7320ms
-(search-for-primes 100000000000000000000000000000000000000000001 3) ; 4970ms from 7320ms
+(search-for-primes 1001 3) ; 3 digits
+(search-for-primes 10001 3) ; 4 digits
+(search-for-primes 100001 3) 
+(search-for-primes 1000001 3) 
+(search-for-primes 10000001 3) ;6 digits
+(search-for-primes 100000001 3) ; 8 digits
+
+;;Results
+
+;; 1009 *** 114ms  3 digits
+;; 1013 *** 112ms
+;; 1019 *** 117ms
+;; done
+;; 10007 *** 151ms 4
+;; 10009 *** 145ms
+;; 10037 *** 148ms
+;; done
+;; 100003 *** 177ms 5
+;; 100019 *** 182ms
+;; 100043 *** 182ms
+;; done
+;; 1000003 *** 210ms 6 
+;; 1000033 *** 212ms
+;; 1000037 *** 220ms
+;; done
+;; 10000019 *** 269ms 7
+;; 10000079 *** 286ms
+;; 10000103 *** 284ms
+;; done
+;; 100000007 *** 332ms 8
+;; 100000037 *** 333ms
+;; 100000039 *** 335ms
+
+;;Twice as many digits, only twice as slow, which is ~ log30(n) =
+;;log(n)/log(30)=.3*log(n) = theta(log(n))
