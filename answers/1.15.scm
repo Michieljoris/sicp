@@ -1,3 +1,4 @@
+#lang planet neil/sicp
 ;; ;Ex1.15
 (define (cube x) (* x x x))
 (define c 0)

@@ -1,0 +1,9 @@
+Install drracket and/or guile
+Install geiser
+C-c-z to start repl
+Cursor in sexpr, M-C-x to eval it
+
+
+http://hackerretreat.com/why-how-start-sicp/
+http://sicpebook.wordpress.com/
+http://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e1
